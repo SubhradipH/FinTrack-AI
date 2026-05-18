@@ -6,7 +6,7 @@ DATABASE_URL = "postgresql://postgres:admin123@localhost:5432/fintrack_db"
 
 engine = create_engine(DATABASE_URL)
 
-sessionLoval=sessionmaker(
+sessionLocal=sessionmaker(
     autocommit = False,
     autoflush=False,
     bind=engine
