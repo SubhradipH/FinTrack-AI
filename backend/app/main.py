@@ -18,3 +18,5 @@ app.include_router(auth_router)
 @app.get("/")
 def home():
     return {"message": "AI Expense Tracker Backend Running"}
+
+    
