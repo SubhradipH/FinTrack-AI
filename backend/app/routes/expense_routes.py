@@ -5,6 +5,8 @@ from app.schemas.expense_schema import Expense
 from app.models.expense_model import Expense as ExpenseModel
 from app.database.database import get_db
 
+from app.utils.dependencies import get_current_user
+
 
 router =APIRouter()
 
@@ -27,9 +29,16 @@ def add_expense(expense: Expense, db: Session=Depends(get_db)):
     }
     
 @router.get("/expenses")
-def get_expenses(db: Session=Depends(get_db)):
-    expenses=db.query(ExpenseModel).all()
-    return expenses
+def get_expenses(
+    current_user: str = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    expenses = db.query(ExpenseModel).all()
+
+    return {
+        "user": current_user,
+        "expenses": expenses
+    }
     
 @router.put("/expenses/{expense_id}")
 def update_expense(
