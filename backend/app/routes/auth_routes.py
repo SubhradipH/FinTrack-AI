@@ -66,7 +66,7 @@ def login(
 
     access_token = create_access_token(
         data={
-            "email": existing_user.email
+            "sub": existing_user.email
         }
     )
 

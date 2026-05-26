@@ -7,23 +7,32 @@ from app.database.database import get_db
 
 from app.utils.dependencies import get_current_user
 
+from app.models.user_model import User
+from app.utils.auth import get_current_user
+
 
 router =APIRouter()
 
 
 @router.post("/expenses")
-def add_expense(expense: Expense, db: Session=Depends(get_db)):
-    new_expense=ExpenseModel(
+def add_expense(
+    expense: Expense,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+
+    new_expense = ExpenseModel(
         title=expense.title,
         amount=expense.amount,
-        category=expense.category
+        category=expense.category,
+        user_id=current_user.id
     )
 
     db.add(new_expense)
     db.commit()
     db.refresh(new_expense)
 
-    return{
+    return {
         "message": "Expense Added Successfully",
         "data": new_expense
     }
